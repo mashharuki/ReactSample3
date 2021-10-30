@@ -1,52 +1,28 @@
 /**
  * メインコンポーネント
  */
-import React,{ useRef, useState, useEffect } from "react";
+import React,{ createContext, useContext } from "react";
 import "./styles.css";
  
+// Contextオブジェクトを生成
+const SampleContextObject = createContext();
+// メッセージ
+const message = "I love React!!";
+
 /**
- * Sampleコンポーネント
+ * ConsumerComponent
  */
-const SampleComponent = () => {
-   // ステート変数
-   const [ text, setText ] = useState("");
-   const inputRefObject = useRef(null);
-
-   /**
-    * 副作用関数
-    */
-  useEffect(() => {
-    console.log("レンダリング！");
-  });
-
-
-
-   /**
-    * クリックした時の関数
-    */
-  const handleClick = () => {
-    setText(inputRefObject.current.value);
-  };
-
-  /**
-   * 初期値を設定する関数
-   */
-  const textReset = () => {
-    setText("");
-    inputRefObject.current.value = "";
-  }
-
-  return (
-    <>
-      <input ref={inputRefObject} type="text" />
-      <button onclick={handleClick}>set text</button>
-      <button onClick={textReset}>reset</button>
-      <p>text: {text}</p>
-    </>
-  );
-}
+const ConsumerComponent = () => {
+  const messageText = useContext(SampleContextObject);
+  console.log(messageText);
+  return <p>{messageText}</p>;
+};
  
- export default function App() {
-   return <SampleComponent />;
- };
+export default function App() {
+  return (
+    <SampleContextObject.Provider value={message}>
+      <ConsumerComponent/>
+    </SampleContextObject.Provider>
+  );
+};
  
