@@ -1,26 +1,27 @@
 /**
  * メインコンポーネント
  */
- import React,{ memo, useState, useEffect } from "react";
+ import React,{ memo, useState, useEffect, useMemo } from "react";
  import "./styles.css";
  
  /**
-  * CountResultコンポーネント
+  * 長方形の面積を求めるsquareコンポーネント
   */
- const CountResult = memo(({text, countState}) => {
-   console.log(`${text}ボタンがクリックされました。`);
- 
-   return (
-     <p>
-       {text} : {countState}
-     </p>
-   );
- });
+const square = (params) => {
+  // 配列を生成
+  const testArea = [...Array(1000).keys()];
+  // 重い処理(テスト用)
+  testArea.forEach(() => {
+    console.log(`「計算B+1」がボタンクリックされ、squre関数実行中, ループ処理を${testArea.length}回実行中`);
+  });
+  // 面積を計算
+  return params * params;
+};
  
  /**
   * Counterコンポーネント
   */
- const Counter = () => {
+const Counter = () => {
    // ステート変数
    const [countStateA, setCountStateA] = useState(0);
    const [countStateB, setCountStateB] = useState(0);
@@ -28,20 +29,25 @@
    /**
     * カウントアップする関数
     */
-   const countIncrementA = () => {
-    setCountStateA((prevCountStateA) => prevCountStateA + 1);
+   const countResultA = () => {
+    setCountStateA((prevCountA) => prevCountA + 1);
+    console.log("計算：A+1ボタンがクリックされました。");
    };
 
-   const countIncrementB = () => {
-    setCountStateB((prevCountStateB) => prevCountStateB + 1);
+   const countResultB = () => {
+    setCountStateB((prevCountB) => prevCountB + 1);
+    console.log("計算：B+1ボタンがクリックされました。");
    };
  
+   // 面積を求める。
+   const squareArea = useMemo(() => square(countStateB), [countStateB]);
+
    return (
      <>
-       <CountResult text="Aボタン" countState={countStateA} />
-       <CountResult text="Bボタン" countState={countStateB} />
-       <button onClick={countIncrementA}>Aボタン</button>
-       <button onClick={countIncrementB}>Bボタン</button>
+       <p><button onClick={countResultA}>計算：A + 1</button></p>
+       <p><button onClick={countResultB}>計算：B + 1</button></p>
+       <p>【正方形の面積】</p>
+       <p>計算結果B  * 計算結果B = {squareArea}</p>
      </>
    );
  }
