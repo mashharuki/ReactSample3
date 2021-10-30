@@ -1,13 +1,13 @@
 /**
  * タイトルコンポーネント
  */
-export const TodoTitle = ({ title, as }) => {
-    // asがh1であれば<h1>で囲む
-    if (as == "h1") {
-        return <h1>{title}</h1>;
-    } else if (as == "h2") { // asがh2であれば<h2>で囲む
-        return <h2>{title}</h2>;
-    } else { // どれでもなければ <p>で囲む
-        return <p>{title}</p>;
-    }
-};
+import React, { memo } from 'react';
+import { Heading } from '@chakra-ui/react';
+
+export const TodoTitle = memo(({ title, as, fontSize, mt }) => {
+    return (
+        <Heading mt={mt} as={as} fontSize={fontSize} w="full">
+            {title}
+         </Heading>
+    );
+});
