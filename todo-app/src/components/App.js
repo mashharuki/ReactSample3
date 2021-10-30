@@ -24,14 +24,22 @@ const TodoTitle = ({ title, as }) => {
 /**
  * TodoItemコンポーネント
  */
-const TodoItem = ({ todo }) => {
+const TodoItem = ({ todo, toggleTodoListItemStatus, deleteTodoListItem }) => {
+
+  // todoの状態を更新する関数
+  const handleToggleTodoItemStatus = ()=> toggleTodoListItemStatus(todo.id, todo.done);
+  // todoを削除する関数
+  const handledeleteTodoListItem = () =>  deleteTodoListItem(todo.id);
+
   return (
     <li>
       {todo.content}
-      <button>
+      <button onClick ={handleToggleTodoItemStatus}>
         {todo.done ? "未完了リストへ" : "完了リストへ"}
       </button>
-      <button>削除</button>
+      <button onClick={handledeleteTodoListItem}>
+        削除
+      </button>
     </li>
   );
 };
@@ -39,12 +47,17 @@ const TodoItem = ({ todo }) => {
 /**
  * TodoListコンポーネント
  */
-const TodoList = ({ todoList }) => {
+const TodoList = ({ todoList, toggleTodoListItemStatus, deleteTodoListItem }) => {
   return (
     <ul>
       {todoList.map((todo) => (
         // TodoItemコンポーネントを使ってレンダリングする。
-        <TodoItem todo={todo} key={todo.id} />
+        <TodoItem 
+          todo={todo} 
+          key={todo.id} 
+          toggleTodoListItemStatus = {toggleTodoListItemStatus}
+          deleteTodoListItem = {deleteTodoListItem} 
+        />
       ))}
     </ul>
   );
@@ -69,7 +82,7 @@ const TodoAdd = ({ inputEl, handleAddTodoListItem }) => {
  */
 function App() {
   // カスタムフックを利用してTodoリストを取得する。
-  const { todoList, addTodoListItem, } = useTodo();
+  const { todoList, addTodoListItem, toggleTodoListItemStatus, deleteTodoListItem } = useTodo();
   // useRefフックを定義
   const inputEl = useRef(null);
 
@@ -110,10 +123,18 @@ function App() {
       <TodoAdd inputEl={inputEl} handleAddTodoListItem={handleAddTodoListItem} />
       
       <TodoTitle title="未完了ToDoリスト" as="h2" />
-      <TodoList todoList={inCompletedList} />
+      <TodoList 
+        todoList={inCompletedList} 
+        toggleTodoListItemStatus={toggleTodoListItemStatus} 
+        deleteTodoListItem={deleteTodoListItem} 
+      />
 
       <TodoTitle title="完了ToDoリスト" as="h2" />
-      <TodoList todoList={completedList} />
+      <TodoList 
+        todoList={completedList}
+        toggleTodoListItemStatus={toggleTodoListItemStatus} 
+        deleteTodoListItem={deleteTodoListItem} 
+      />
     </>
   );
 }
