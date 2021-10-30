@@ -51,6 +51,20 @@ const TodoList = ({ todoList }) => {
 };
 
 /**
+ * TodoAddコンポーネント
+ */
+const TodoAdd = ({ inputEl, handleAddTodoListItem }) => { 
+  return (
+    <>
+      <textarea ref={inputEl} />
+      <button onClick={handleAddTodoListItem}>
+        + ToDo追加
+      </button>
+    </>
+  );
+};
+
+/**
  * Appコンポーネント
  */
 function App() {
@@ -93,11 +107,8 @@ function App() {
   return (
     <>
       <TodoTitle title="ToDo進捗管理" as="h1" />
-      <textarea ref={inputEl} />
-      <button onClick={handleAddTodoListItem}>
-        + ToDo追加
-      </button>
-
+      <TodoAdd inputEl={inputEl} handleAddTodoListItem={handleAddTodoListItem} />
+      
       <TodoTitle title="未完了ToDoリスト" as="h2" />
       <TodoList todoList={inCompletedList} />
 
