@@ -1,45 +1,55 @@
 /**
  * メインコンポーネント
  */
-import { useState } from "react";
+import React,{ useState, useEffect } from "react";
 import "./styles.css";
 
-/**
- * ログアウトボタンコンポーネント
- */
-const Logoutbutton = (props) => (
-  <button onClick={props.toggleIsLoggedIn}>ログアウト</button>
-);
+// 初期値
+const INITIAL_COUNT = 0;
 
 /**
- * ログインボタンコンポーネント
+ * サンプルコンポーネント
  */
-const Loginbutton = (props) => (
-  <button onClick={props.toggleIsLoggedOut}>ログイン</button>
-);
-
-/**
- * ログインの状態を管理するコンポーネント
- */
-const LoginControl = () => {
-  // ステート変数を用意する。
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const SampleComponent = () => {
+  // ステート変数
+  const [ count, setCount ] = useState(INITIAL_COUNT);
 
   /**
-   * クリックでステート変数を変化させる関数
+   * 副作用フックの宣言
    */
-  const toggleIsLoggedIn = () => {
-    setIsLoggedIn(!isLoggedIn);
+  useEffect(callbackFunction, [count]);
+
+  /**
+   * 副作用関数を宣言する。
+   */
+  const callbackFunction = () => {
+    document.title = `${count}回クリックされました。`;
   };
 
-  // isLoggedInの値で表示するボタンを変更する。
-  if (!isLoggedIn) {
-    return <Loginbutton toggleIsLoggedOut={toggleIsLoggedIn} />;
-  }
+  /**
+   * カウントアップする関数
+   */  
+  const countIncrement = () => {
+    setCount((prevCount) => prevCount + 1);
+  };
 
-  return <Logoutbutton toggleIsLoggedIn={toggleIsLoggedIn} />;
-};
+  /**
+   * カウントをリセットするための関数
+   */
+  const countReset = () => {
+    setCount(INITIAL_COUNT);
+  };
+
+  // レンダリングする内容
+  return (
+    <div className="App">
+      <p>現在のカウント数：{count}</p>
+      <button onClick={countIncrement}>＋ボタン</button>
+      <button onClick={countReset}>リセット</button>
+    </div>
+  );
+}
 
 export default function App() {
-  return <LoginControl />;
+  return <SampleComponent/>;
 }
