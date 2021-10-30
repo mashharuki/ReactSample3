@@ -32,17 +32,51 @@ function App() {
 
   console.log("TODOリスト：", todoList);
 
+  /**
+   * 「未完了」のリストの配列
+   */
+  const inCompletedList = todoList.filter((todo) => {
+    return !todo.done;
+  });
+
+  /**
+   * 「完了」のリストの配列
+   */
+   const completedList = todoList.filter((todo) => {
+    return todo.done;
+  });
+
+  console.log("未完了ToDoリスト：", inCompletedList);
+  console.log("完了ToDoリスト：", completedList);
+
   return (
     <>
       <h1>ToDo進捗管理</h1>
       <textarea/>
       <button>+ ToDo追加</button>
 
-      <h2>ToDoリスト</h2>
+      <h2>未完了ToDoリスト</h2>
       <ul>
-        {todoList.map((todo) => (
+        {inCompletedList.map((todo) => (
           <li key={todo.id}>
-            {todo.content}({todo.done ? "完了" : "未完了"})
+            {todo.content}
+            <button>
+              {todo.done ? "未完了リストへ" : "完了リストへ"}
+            </button>
+            <button>削除</button>
+          </li>
+        ))}
+      </ul>
+
+      <h2>完了ToDoリスト</h2>
+      <ul>
+        {completedList.map((todo) => (
+          <li key={todo.id}>
+            {todo.content}
+            <button>
+              {todo.done ? "未完了リストへ" : "完了リストへ"}
+            </button>
+            <button>削除</button>
           </li>
         ))}
       </ul>
