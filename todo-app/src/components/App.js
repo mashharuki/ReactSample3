@@ -7,6 +7,50 @@ import axios from 'axios';
 const todoDataUrl = "http://localhost:3100/todos";
 
 /**
+ * TodoTitleコンポーネント
+ */
+const TodoTitle = ({ title, as }) => {
+
+  // asがh1であれば<h1>で囲む
+  if (as == "h1") {
+    return <h1>{title}</h1>;
+  } else if (as == "h2") { // asがh2であれば<h2>で囲む
+    return <h2>{title}</h2>;
+  } else { // どれでもなければ <p>で囲む
+    return <p>{title}</p>;
+  }
+};
+
+/**
+ * TodoItemコンポーネント
+ */
+const TodoItem = ({ todo }) => {
+  return (
+    <li>
+      {todo.content}
+      <button>
+        {todo.done ? "未完了リストへ" : "完了リストへ"}
+      </button>
+      <button>削除</button>
+    </li>
+  );
+};
+
+/**
+ * TodoListコンポーネント
+ */
+const TodoList = ({ todoList }) => {
+  return (
+    <ul>
+      {todoList.map((todo) => (
+        // TodoItemコンポーネントを使ってレンダリングする。
+        <TodoItem todo={todo} key={todo.id} />
+      ))}
+    </ul>
+  );
+};
+
+/**
  * Appコンポーネント
  */
 function App() {
@@ -51,35 +95,15 @@ function App() {
 
   return (
     <>
-      <h1>ToDo進捗管理</h1>
+      <TodoTitle title="ToDo進捗管理" as="h1" />
       <textarea/>
       <button>+ ToDo追加</button>
 
-      <h2>未完了ToDoリスト</h2>
-      <ul>
-        {inCompletedList.map((todo) => (
-          <li key={todo.id}>
-            {todo.content}
-            <button>
-              {todo.done ? "未完了リストへ" : "完了リストへ"}
-            </button>
-            <button>削除</button>
-          </li>
-        ))}
-      </ul>
+      <TodoTitle title="未完了ToDoリスト" as="h2" />
+      <TodoList todoList={inCompletedList} />
 
-      <h2>完了ToDoリスト</h2>
-      <ul>
-        {completedList.map((todo) => (
-          <li key={todo.id}>
-            {todo.content}
-            <button>
-              {todo.done ? "未完了リストへ" : "完了リストへ"}
-            </button>
-            <button>削除</button>
-          </li>
-        ))}
-      </ul>
+      <TodoTitle title="完了ToDoリスト" as="h2" />
+      <TodoList todoList={completedList} />
     </>
   );
 }
