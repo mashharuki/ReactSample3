@@ -1,10 +1,8 @@
 /**
  * メインコンポーネント
  */
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-// ローカルに準備したモックサーバーのURL
-const todoDataUrl = "http://localhost:3100/todos";
+
+import { useTodo } from "../hooks/useTodo";
 
 /**
  * TodoTitleコンポーネント
@@ -54,25 +52,8 @@ const TodoList = ({ todoList }) => {
  * Appコンポーネント
  */
 function App() {
-  // ステート変数
-  const [ todoList, setTodoList ] = useState([]);
-
-  /**
-   * 副作用フック
-   */
-  useEffect(() => {
-    /**
-     * データ取得関数
-     */
-    const fetchData = async () => {
-      // モックサーバーからの取得結果
-      const response = await axios.get(todoDataUrl);
-      // todoリストに設定する。
-      setTodoList(response.data);
-    };
-    // 関数呼び出し
-    fetchData();
-  }, []);
+  // カスタムフックを利用してTodoリストを取得する。
+  const { todoList } = useTodo();
 
   console.log("TODOリスト：", todoList);
 

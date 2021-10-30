@@ -31,14 +31,14 @@ export const useTodo = () => {
         // Todoリストからidに合致するものを探す。
         const todoItem = todoList.find((item) => item.id === id);
         // 状態を反転させたTodoを作成する。
-        const newTodoItem = {...todoItem, done : !done};
+        const newTodoItem = {...todoItem, done: !done};
         // データを更新する。
         todoData.updataTodosData(id, newTodoItem).then((updatedToDo) =>  {
             // 状態が更新されたtodoを含めて新しい配列を生成する。
             // 今回更新されたIDと合致したTodoについては新しい内容で置き換える。
-            const newTodoList = todoList.map((item) =>  {
+            const newTodoList = todoList.map((item) =>  
                 item.id !== updatedToDo.id ? item : updatedToDo
-            });
+            );
             setTodoList(newTodoList);
         });
     };
@@ -55,7 +55,7 @@ export const useTodo = () => {
         };
 
         // データを追加し、TodoListの内容も更新する。
-        return todoData.addTodoListItem(newTodoItem).then((addTodo) => {
+        return todoData.addTodosData(newTodoItem).then((addTodo) => {
             // TodoListを更新する。(newTodoItemを追加された状態にする。)
             setTodoList(addTodo, ...todoList);
         });
