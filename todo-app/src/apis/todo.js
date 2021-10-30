@@ -18,6 +18,7 @@ export const getAllTodosData = async () => {
  * POSTリクエストによりToDoを追加する関数
  */
 export const addTodosData = async (todo) => {
+    console.log("追加するtodo:",todo);
     // データを追加する。
     const response = await axios.post(todoDataUrl, todo);
     return response.data;

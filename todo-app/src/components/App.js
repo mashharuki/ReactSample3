@@ -2,6 +2,8 @@
  * メインコンポーネント
  */
 
+import React, { useRef } from "react";
+import { addTodosData } from "../apis/todo";
 import { useTodo } from "../hooks/useTodo";
 
 /**
@@ -53,9 +55,23 @@ const TodoList = ({ todoList }) => {
  */
 function App() {
   // カスタムフックを利用してTodoリストを取得する。
-  const { todoList } = useTodo();
+  const { todoList, addTodoListItem, } = useTodo();
+  // useRefフックを定義
+  const inputEl = useRef(null);
 
   console.log("TODOリスト：", todoList);
+
+  /**
+   * 「+Todo追加」ボタンをクリックした時の処理
+   */
+  const handleAddTodoListItem = () => {
+    // 入力されていなければ何も返さない。
+    if (inputEl.current.value === "") return;
+    // Todoに追加するためにaddTodoListItemを追加する。
+    addTodoListItem(inputEl.current.value);
+    // 入力フォームをクリアする。
+    inputEl.current.value = "";
+  };
 
   /**
    * 「未完了」のリストの配列
@@ -77,8 +93,10 @@ function App() {
   return (
     <>
       <TodoTitle title="ToDo進捗管理" as="h1" />
-      <textarea/>
-      <button>+ ToDo追加</button>
+      <textarea ref={inputEl} />
+      <button onClick={handleAddTodoListItem}>
+        + ToDo追加
+      </button>
 
       <TodoTitle title="未完了ToDoリスト" as="h2" />
       <TodoList todoList={inCompletedList} />
